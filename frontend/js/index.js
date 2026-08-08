@@ -1,81 +1,202 @@
-const feedbackForm = document.getElementById("feedbackForm");
+// ==========================================
+// SUPABASE CONNECTION
+// ==========================================
 
-feedbackForm.addEventListener("submit", function (event) {
+const SUPABASE_URL =
+    "https://eotcdqdklcntiwlwxsyg.supabase.co";
 
-    event.preventDefault();
-
-    const fullName = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const position = document.getElementById("position").value;
-    const committee = document.getElementById("committee").value;
-
-
-    // Make sure all information exists
-    if (!fullName || !email || !position || !committee) {
-
-        alert("Please complete all fields.");
-
-        return;
-    }
+const SUPABASE_KEY =
+    "sb_publishable_A9UYGqRAxMObZyfRA5muxQ_EMT1Sk9j";
 
 
-    // Create the new member
-    const newUser = {
-
-        id: Date.now(),
-
-        fullName: fullName,
-
-        email: email,
-
-        position: position,
-
-        committee: committee,
-
-        feedback: "",
-
-        feedbackSent: false,
-
-        feedbackDate: null
-
-    };
-
-
-    // Get existing members
-    let users = [];
-
-    try {
-
-        users =
-            JSON.parse(
-                localStorage.getItem("phaiUsers")
-            ) || [];
-
-    } catch (error) {
-
-        users = [];
-
-    }
-
-
-    // Add new member
-    users.push(newUser);
-
-
-    // Save members
-    localStorage.setItem(
-        "phaiUsers",
-        JSON.stringify(users)
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
     );
 
 
-    // Confirmation
-    alert(
-        "Feedback request submitted successfully!"
+// ==========================================
+// FEEDBACK FORM
+// ==========================================
+
+const feedbackForm =
+    document.getElementById("feedbackForm");
+
+
+if (feedbackForm) {
+
+    feedbackForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            // ==================================
+            // GET FORM VALUES
+            // ==================================
+
+            const fullName =
+                document
+                    .getElementById("fullName")
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+
+            const position =
+                document
+                    .getElementById("position")
+                    .value;
+
+
+            const committee =
+                document
+                    .getElementById("committee")
+                    .value;
+
+
+            // ==================================
+            // VALIDATE
+            // ==================================
+
+            if (
+                !fullName ||
+                !email ||
+                !position ||
+                !committee
+            ) {
+
+                alert(
+                    "Please complete all fields."
+                );
+
+                return;
+            }
+
+
+            // ==================================
+            // BUTTON
+            // ==================================
+
+            const submitButton =
+                feedbackForm.querySelector(
+                    "button[type='submit']"
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Submitting...";
+
+            }
+
+
+            try {
+
+                // ==================================
+                // INSERT INTO SUPABASE
+                // ==================================
+
+                const { error } =
+                    await supabaseClient
+                        .from("feedback_requests")
+                        .insert([
+                            {
+                                full_name: fullName,
+
+                                email: email,
+
+                                position: position,
+
+                                committee: committee
+                            }
+                        ]);
+
+
+                // ==================================
+                // HANDLE SUPABASE ERROR
+                // ==================================
+
+                if (error) {
+
+                    console.error(
+                        "Supabase error:",
+                        error
+                    );
+
+                    alert(
+                        "Something went wrong while submitting your request. Please try again."
+                    );
+
+                    return;
+                }
+
+
+                // ==================================
+                // SUCCESS
+                // ==================================
+
+                console.log(
+                    "Feedback request submitted successfully."
+                );
+
+
+                alert(
+                    "Your feedback request has been submitted successfully!"
+                );
+
+
+                feedbackForm.reset();
+
+
+            } catch (error) {
+
+                console.error(
+                    "FULL ERROR:",
+                    error
+                );
+
+                console.error(
+                    "Error message:",
+                    error.message
+                );
+
+                console.error(
+                    "Error name:",
+                    error.name
+                );
+
+
+                alert(
+                    "Something went wrong. Please check the Console."
+                );
+
+
+            } finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
+                        "Request Feedback";
+
+                }
+
+            }
+
+        }
     );
 
-
-    // Clear form
-    feedbackForm.reset();
-
-});
+}

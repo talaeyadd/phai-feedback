@@ -1,10 +1,26 @@
-/* =========================================
-   CHECK ADMIN LOGIN
-========================================= */
+// =========================================
+// SUPABASE CONNECTION
+// =========================================
+
+const SUPABASE_URL =
+    "https://eotcdqdklcntiwlwxsyg.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_A9UYGqRAxMObZyfRA5muxQ_EMT1Sk9j";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+// =========================================
+// CHECK ADMIN LOGIN
+// =========================================
 
 const loggedInAdmin =
     sessionStorage.getItem("phaiAdmin");
-
 
 if (!loggedInAdmin) {
 
@@ -14,13 +30,12 @@ if (!loggedInAdmin) {
 }
 
 
-/* =========================================
-   DISPLAY ADMIN NAME
-========================================= */
+// =========================================
+// DISPLAY ADMIN NAME
+// =========================================
 
 const adminName =
     document.getElementById("adminName");
-
 
 const adminNames = {
 
@@ -32,8 +47,10 @@ const adminNames = {
 
 };
 
-
-if (adminNames[loggedInAdmin]) {
+if (
+    adminName &&
+    adminNames[loggedInAdmin]
+) {
 
     adminName.textContent =
         adminNames[loggedInAdmin];
@@ -41,19 +58,9 @@ if (adminNames[loggedInAdmin]) {
 }
 
 
-/* =========================================
-   GET REGISTERED USERS
-========================================= */
-
-let users =
-    JSON.parse(
-        localStorage.getItem("phaiUsers")
-    ) || [];
-
-
-/* =========================================
-   ELEMENTS
-========================================= */
+// =========================================
+// ELEMENTS
+// =========================================
 
 const userList =
     document.getElementById("userList");
@@ -67,13 +74,11 @@ const feedbackSent =
 const feedbackPending =
     document.getElementById("feedbackPending");
 
-
 const noSelection =
     document.getElementById("noSelection");
 
 const feedbackContent =
     document.getElementById("feedbackContent");
-
 
 const selectedName =
     document.getElementById("selectedName");
@@ -103,18 +108,77 @@ const successMessage =
     document.getElementById("successMessage");
 
 
+let users = [];
+
 let selectedUserIndex = null;
 
 
-/* =========================================
-   DISPLAY STATISTICS
-========================================= */
+// =========================================
+// GET USERS FROM SUPABASE
+// =========================================
+
+async function loadUsers() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("feedback_requests")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(
+                "Supabase error:",
+                error
+            );
+
+            alert(
+                "Unable to load members. Please check the Console."
+            );
+
+            return;
+
+        }
+
+
+        users = data || [];
+
+
+        renderUsers();
+
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =========================================
+// DISPLAY STATISTICS
+// =========================================
 
 function updateStatistics() {
 
     const sent =
         users.filter(
-            user => user.feedbackSent === true
+            user =>
+                user.feedback_sent === true
         ).length;
 
 
@@ -132,9 +196,9 @@ function updateStatistics() {
 }
 
 
-/* =========================================
-   DISPLAY USERS
-========================================= */
+// =========================================
+// DISPLAY USERS
+// =========================================
 
 function renderUsers() {
 
@@ -164,43 +228,44 @@ function renderUsers() {
     }
 
 
-    users.forEach((user, index) => {
+    users.forEach(
+        (user, index) => {
+
+            const item =
+                document.createElement("div");
 
 
-        const item =
-            document.createElement("div");
+            item.className =
+                "user-item";
 
 
-        item.className =
-            "user-item";
+            item.innerHTML = `
+
+                <div class="user-name">
+                    ${user.full_name}
+                </div>
+
+                <div class="user-meta">
+                    ${user.position} · ${user.committee}
+                </div>
+
+            `;
 
 
-        item.innerHTML = `
+            item.addEventListener(
+                "click",
+                function () {
 
-            <div class="user-name">
-                ${user.fullName}
-            </div>
+                    selectUser(index);
 
-            <div class="user-meta">
-                ${user.position} · ${user.committee}
-            </div>
-
-        `;
+                }
+            );
 
 
-        item.addEventListener(
-            "click",
-            function () {
+            userList.appendChild(item);
 
-                selectUser(index);
-
-            }
-        );
-
-
-        userList.appendChild(item);
-
-    });
+        }
+    );
 
 
     updateStatistics();
@@ -208,9 +273,9 @@ function renderUsers() {
 }
 
 
-/* =========================================
-   SELECT USER
-========================================= */
+// =========================================
+// SELECT USER
+// =========================================
 
 function selectUser(index) {
 
@@ -225,13 +290,25 @@ function selectUser(index) {
         .querySelectorAll(".user-item")
         .forEach(
             item =>
-                item.classList.remove("active")
+                item.classList.remove(
+                    "active"
+                )
         );
 
 
-    document
-        .querySelectorAll(".user-item")[index]
-        .classList.add("active");
+    const selectedItem =
+        document
+            .querySelectorAll(".user-item")
+            [index];
+
+
+    if (selectedItem) {
+
+        selectedItem.classList.add(
+            "active"
+        );
+
+    }
 
 
     noSelection.style.display =
@@ -243,7 +320,7 @@ function selectUser(index) {
 
 
     selectedName.textContent =
-        user.fullName;
+        user.full_name;
 
 
     selectedEmail.textContent =
@@ -259,13 +336,15 @@ function selectUser(index) {
 
 
     selectedStatus.textContent =
-        user.feedbackSent
+        user.feedback_sent
             ? "Sent"
             : "Pending";
 
 
     avatar.textContent =
-        getInitials(user.fullName);
+        getInitials(
+            user.full_name
+        );
 
 
     feedbackText.value =
@@ -278,9 +357,9 @@ function selectUser(index) {
 }
 
 
-/* =========================================
-   INITIALS
-========================================= */
+// =========================================
+// INITIALS
+// =========================================
 
 function getInitials(name) {
 
@@ -297,16 +376,17 @@ function getInitials(name) {
 }
 
 
-/* =========================================
-   SEND FEEDBACK
-========================================= */
+// =========================================
+// SAVE FEEDBACK
+// =========================================
 
 sendButton.addEventListener(
     "click",
-    function () {
+    async function () {
 
-
-        if (selectedUserIndex === null) {
+        if (
+            selectedUserIndex === null
+        ) {
 
             return;
 
@@ -332,61 +412,115 @@ sendButton.addEventListener(
             users[selectedUserIndex];
 
 
-        /*
-            Save the feedback.
+        sendButton.disabled = true;
 
-            Actual email sending will be connected
-            later through the backend.
-        */
-
-        user.feedback =
-            feedback;
+        sendButton.textContent =
+            "Saving...";
 
 
-        user.feedbackSent =
-            true;
+        try {
+
+            const {
+                error
+            } = await supabaseClient
+                .from("feedback_requests")
+                .update({
+
+                    feedback:
+                        feedback,
+
+                    feedback_sent:
+                        true,
+
+                    feedback_date:
+                        new Date().toISOString()
+
+                })
+                .eq(
+                    "id",
+                    user.id
+                );
 
 
-        user.feedbackDate =
-            new Date().toISOString();
+            if (error) {
+
+                console.error(
+                    "Supabase error:",
+                    error
+                );
+
+                alert(
+                    "Unable to save the feedback."
+                );
+
+                return;
+
+            }
 
 
-        localStorage.setItem(
-            "phaiUsers",
-            JSON.stringify(users)
-        );
+            // Update local page data
+
+            user.feedback =
+                feedback;
 
 
-        selectedStatus.textContent =
-            "Sent";
+            user.feedback_sent =
+                true;
 
 
-        successMessage.style.display =
-            "block";
+            user.feedback_date =
+                new Date().toISOString();
 
 
-        updateStatistics();
+            selectedStatus.textContent =
+                "Sent";
 
 
-        /*
-            For now, the system records that the
-            feedback was sent.
+            successMessage.style.display =
+                "block";
 
-            Later we will connect this button
-            to an actual email service.
-        */
+
+            updateStatistics();
+
+
+        } catch (error) {
+
+            console.error(
+                "Unexpected error:",
+                error
+            );
+
+            alert(
+                "Something went wrong. Please try again."
+            );
+
+
+        } finally {
+
+            sendButton.disabled = false;
+
+            sendButton.textContent =
+                "Send Feedback";
+
+        }
 
     }
 );
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+// =========================================
+// LOGOUT
+// =========================================
 
-document
-    .getElementById("logoutButton")
-    .addEventListener(
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
         "click",
         function () {
 
@@ -394,15 +528,18 @@ document
                 "phaiAdmin"
             );
 
+
             window.location.href =
                 "admin-login.html";
 
         }
     );
 
+}
 
-/* =========================================
-   START
-========================================= */
 
-renderUsers();
+// =========================================
+// START
+// =========================================
+
+loadUsers();
