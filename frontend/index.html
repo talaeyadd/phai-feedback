@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PhAI | Feedback Portal</title>
+
+
+    <style>
+
+        /* =========================================
+           COLOR PALETTE
+        ========================================= */
+
+        :root {
+            --sage-dark: #526B5A;
+            --sage: #7F9B88;
+            --sage-light: #E2EBE4;
+            --sage-background: #F4F8F5;
+
+            --dark: #26332A;
+            --gray: #6E776F;
+            --light-gray: #9AA39D;
+
+            --border: #DDE5DF;
+
+            --white: #FFFFFF;
+        }
+
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================
+           BODY
+        ========================================= */
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--dark);
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #FFFFFF 0%,
+                    #F4F8F5 100%
+                );
+        }
+
+
+        /* =========================================
+           NAVIGATION BAR
+        ========================================= */
+
+        .navbar {
+
+            width: 100%;
+
+            height: 90px;
+
+            padding: 0 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        /* =========================================
+           PHAI LOGO
+        ========================================= */
+
+        .logo-container {
+
+            width: 150px;
+
+            height: 75px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            overflow: hidden;
+        }
+
+
+        .logo-container img {
+
+            width: 150px;
+
+            height: 75px;
+
+            object-fit: contain;
+
+            display: block;
+        }
+
+
+        /* =========================================
+           SIGN IN BUTTON
+        ========================================= */
+
+        .signin {
+
+            text-decoration: none;
+
+            color: var(--sage-dark);
+
+            border:
+                1px solid var(--sage);
+
+            padding:
+                11px 26px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .signin:hover {
+
+            background:
+                var(--sage-dark);
+
+            color:
+                white;
+
+        }
+
+
+        /* =========================================
+           MAIN CONTAINER
+        ========================================= */
+
+        .main-container {
+
+            width: 90%;
+
+            max-width: 1250px;
+
+            min-height:
+                calc(100vh - 150px);
+
+            margin:
+                0 auto;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                0.9fr 1.1fr;
+
+            gap:
+                80px;
+
+            align-items:
+                center;
+        }
+
+
+        /* =========================================
+           WELCOME SECTION
+        ========================================= */
+
+        .welcome-section {
+
+            padding-left:
+                15px;
+        }
+
+
+        .tag {
+
+            display:
+                inline-block;
+
+            padding:
+                8px 17px;
+
+            background:
+                var(--sage-light);
+
+            color:
+                var(--sage-dark);
+
+            border-radius:
+                30px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            letter-spacing:
+                0.4px;
+
+            margin-bottom:
+                23px;
+        }
+
+
+        .welcome-section h1 {
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size:
+                clamp(42px, 5vw, 64px);
+
+            font-weight:
+                500;
+
+            line-height:
+                1.12;
+
+            color:
+                var(--dark);
+
+            margin-bottom:
+                25px;
+        }
+
+
+        .welcome-section h1 span {
+
+            display:
+                block;
+
+            color:
+                var(--sage-dark);
+        }
+
+
+        .welcome-section p {
+
+            max-width:
+                510px;
+
+            color:
+                var(--gray);
+
+            font-size:
+                16px;
+
+            line-height:
+                1.8;
+        }
+
+
+        .decorative-line {
+
+            width:
+                65px;
+
+            height:
+                4px;
+
+            background:
+                var(--sage);
+
+            border-radius:
+                10px;
+
+            margin-top:
+                32px;
+        }
+
+
+        /* =========================================
+           FEEDBACK CARD
+        ========================================= */
+
+        .feedback-card {
+
+            background:
+                var(--white);
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                24px;
+
+            padding:
+                42px;
+
+            box-shadow:
+                0 20px 55px
+                rgba(60, 85, 68, 0.10);
+        }
+
+
+        /* =========================================
+           CARD HEADER
+        ========================================= */
+
+        .card-header {
+
+            margin-bottom:
+                30px;
+        }
+
+
+        .card-header h2 {
+
+            font-size:
+                27px;
+
+            font-weight:
+                700;
+
+            color:
+                var(--dark);
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .card-header p {
+
+            color:
+                var(--gray);
+
+            font-size:
+                14px;
+        }
+
+
+        /* =========================================
+           FORM
+        ========================================= */
+
+        .form-group {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                8px;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .form-group label {
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+            color:
+                var(--dark);
+        }
+
+
+        /* =========================================
+           INPUTS
+        ========================================= */
+
+        input,
+        select {
+
+            width:
+                100%;
+
+            height:
+                51px;
+
+            padding:
+                0 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                10px;
+
+            background:
+                #FBFCFB;
+
+            color:
+                var(--dark);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+            transition:
+                all 0.2s ease;
+        }
+
+
+        input::placeholder {
+
+            color:
+                #A5ADA7;
+        }
+
+
+        input:hover,
+        select:hover {
+
+            border-color:
+                #C4D1C8;
+        }
+
+
+        input:focus,
+        select:focus {
+
+            border-color:
+                var(--sage);
+
+            background:
+                white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(127, 155, 136, 0.12);
+        }
+
+
+        select {
+
+            cursor:
+                pointer;
+        }
+
+
+        /* =========================================
+           POSITION + COMMITTEE
+        ========================================= */
+
+        .form-row {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                15px;
+        }
+
+
+        /* =========================================
+           SUBMIT BUTTON
+        ========================================= */
+
+        .submit-button {
+
+            width:
+                100%;
+
+            height:
+                55px;
+
+            margin-top:
+                7px;
+
+            border:
+                none;
+
+            border-radius:
+                11px;
+
+            background:
+                var(--sage-dark);
+
+            color:
+                white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size:
+                14px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            gap:
+                13px;
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        .submit-button:hover {
+
+            background:
+                #425649;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(82, 107, 90, 0.20);
+        }
+
+
+        .arrow {
+
+            font-size:
+                20px;
+
+            transition:
+                transform 0.25s ease;
+        }
+
+
+        .submit-button:hover .arrow {
+
+            transform:
+                translateX(5px);
+        }
+
+
+        /* =========================================
+           PRIVACY TEXT
+        ========================================= */
+
+        .privacy {
+
+            text-align:
+                center;
+
+            color:
+                var(--light-gray);
+
+            font-size:
+                11px;
+
+            line-height:
+                1.5;
+
+            margin-top:
+                18px;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+
+            text-align:
+                center;
+
+            color:
+                var(--light-gray);
+
+            font-size:
+                11px;
+
+            padding:
+                15px;
+        }
+
+
+        /* =========================================
+           TABLET
+        ========================================= */
+
+        @media (max-width: 950px) {
+
+            .main-container {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    45px;
+
+                padding:
+                    55px 0;
+            }
+
+
+            .welcome-section {
+
+                text-align:
+                    center;
+
+                padding:
+                    0;
+            }
+
+
+            .welcome-section p {
+
+                margin:
+                    auto;
+            }
+
+
+            .decorative-line {
+
+                margin:
+                    30px auto 0;
+            }
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                padding:
+                    0 5%;
+            }
+
+
+            .logo-container {
+
+                width:
+                    120px;
+
+                height:
+                    65px;
+            }
+
+
+            .logo-container img {
+
+                width:
+                    120px;
+
+                height:
+                    65px;
+            }
+
+
+            .main-container {
+
+                width:
+                    90%;
+            }
+
+
+            .feedback-card {
+
+                padding:
+                    28px 22px;
+
+                border-radius:
+                    18px;
+            }
+
+
+            .form-row {
+
+                grid-template-columns:
+                    1fr;
+
+                gap:
+                    0;
+            }
+
+
+            .welcome-section h1 {
+
+                font-size:
+                    42px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header class="navbar">
+
+
+        <!-- PHAI LOGO -->
+
+        <div class="logo-container">
+
+            <img
+                src="./images/phai-logo.png"
+                alt="PhAI Logo"
+            >
+
+        </div>
+
+
+        <!-- ADMIN SIGN IN -->
+
+        <a
+            href="admin-login.html"
+            class="signin"
+        >
+            Sign In
+        </a>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="main-container">
+
+
+        <!-- =====================================
+             WELCOME
+        ====================================== -->
+
+        <section class="welcome-section">
+
+
+            <div class="tag">
+
+                PhAI Feedback Portal
+
+            </div>
+
+
+            <h1>
+
+                Welcome to the
+
+                <span>
+                    PhAI Feedback Portal
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Your performance matters. Request personalized
+                feedback from the PhAI administration team and
+                gain valuable insights to support your growth.
+
+            </p>
+
+
+            <div class="decorative-line"></div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             FEEDBACK FORM
+        ====================================== -->
+
+        <section class="feedback-card">
+
+
+            <div class="card-header">
+
+                <h2>
+                    Request Feedback
+                </h2>
+
+                <p>
+                    Please enter your information below.
+                </p>
+
+            </div>
+
+
+
+            <form>
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="fullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- POSITION + COMMITTEE -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="position">
+                            Position
+                        </label>
+
+
+                        <select
+                            id="position"
+                            name="position"
+                            required
+                        >
+
+                            <option
+                                value=""
+                                disabled
+                                selected
+                            >
+                                Select position
+                            </option>
+
+
+                            <option value="Member">
+                                Member
+                            </option>
+
+
+                            <option value="Head">
+                                Head
+                            </option>
+
+
+                            <option value="Coordinator">
+                                Coordinator
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="committee">
+                            Committee
+                        </label>
+
+
+                        <select
+                            id="committee"
+                            name="committee"
+                            required
+                        >
+
+                            <option
+                                value=""
+                                disabled
+                                selected
+                            >
+                                Select committee
+                            </option>
+
+
+                            <option value="Marketing">
+                                Marketing
+                            </option>
+
+
+                            <option value="IT">
+                                IT
+                            </option>
+
+
+                            <option value="Fair">
+                                Fair
+                            </option>
+
+
+                            <option value="L&D">
+                                L&D
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+
+                    <span>
+                        Request Feedback
+                    </span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+
+            <p class="privacy">
+
+                Your information will only be used for
+                providing performance feedback.
+
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        © 2026 PhAI · Feedback Portal
+
+    </footer>
+
+<script src="js/index.js"></script>
+
+</body>
+
+</html>

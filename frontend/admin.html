@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PhAI | Admin Dashboard</title>
+
+
+    <style>
+
+        :root {
+
+            --sage-dark: #526B5A;
+
+            --sage: #7F9B88;
+
+            --sage-light: #E2EBE4;
+
+            --background: #F4F8F5;
+
+            --dark: #26332A;
+
+            --gray: #6E776F;
+
+            --light-gray: #9AA39D;
+
+            --border: #DDE5DF;
+
+            --white: #FFFFFF;
+
+        }
+
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: var(--dark);
+
+            background:
+                var(--background);
+
+        }
+
+
+        /* =================================
+           NAVBAR
+        ================================= */
+
+        .navbar {
+
+            height: 78px;
+
+            padding:
+                0 5%;
+
+            background: white;
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+        }
+
+
+        .brand-logo {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            background:
+                var(--sage-dark);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family: Georgia, serif;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+        }
+
+
+        .brand-text {
+
+            font-weight: 700;
+
+            font-size: 16px;
+
+        }
+
+
+        .admin-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+        }
+
+
+        .admin-name {
+
+            color:
+                var(--gray);
+
+            font-size: 13px;
+
+        }
+
+
+        .logout-button {
+
+            border:
+                1px solid var(--border);
+
+            background: white;
+
+            color:
+                var(--gray);
+
+            padding:
+                9px 16px;
+
+            border-radius:
+                8px;
+
+            cursor:
+                pointer;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .logout-button:hover {
+
+            border-color:
+                var(--sage);
+
+            color:
+                var(--sage-dark);
+
+        }
+
+
+        /* =================================
+           DASHBOARD
+        ================================= */
+
+        .dashboard {
+
+            width: 90%;
+
+            max-width: 1250px;
+
+            margin:
+                40px auto;
+
+        }
+
+
+        .dashboard-header {
+
+            margin-bottom:
+                30px;
+
+        }
+
+
+        .dashboard-header h1 {
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size:
+                34px;
+
+            font-weight:
+                500;
+
+            margin-bottom:
+                8px;
+
+        }
+
+
+        .dashboard-header p {
+
+            color:
+                var(--gray);
+
+            font-size:
+                14px;
+
+        }
+
+
+        /* =================================
+           STAT CARDS
+        ================================= */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                18px;
+
+            margin-bottom:
+                30px;
+
+        }
+
+
+        .stat-card {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                16px;
+
+            padding:
+                22px;
+
+        }
+
+
+        .stat-label {
+
+            color:
+                var(--gray);
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .stat-number {
+
+            font-size:
+                28px;
+
+            font-weight:
+                700;
+
+            color:
+                var(--sage-dark);
+
+        }
+
+
+        /* =================================
+           CONTENT GRID
+        ================================= */
+
+        .content-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                0.9fr 1.5fr;
+
+            gap:
+                22px;
+
+        }
+
+
+        /* =================================
+           USER LIST
+        ================================= */
+
+        .users-panel {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                18px;
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .panel-header {
+
+            padding:
+                22px;
+
+            border-bottom:
+                1px solid var(--border);
+
+        }
+
+
+        .panel-header h2 {
+
+            font-size:
+                17px;
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .panel-header p {
+
+            color:
+                var(--gray);
+
+            font-size:
+                12px;
+
+        }
+
+
+        .user-list {
+
+            max-height:
+                570px;
+
+            overflow-y:
+                auto;
+
+        }
+
+
+        .user-item {
+
+            padding:
+                17px 20px;
+
+            border-bottom:
+                1px solid #EEF2EF;
+
+            cursor:
+                pointer;
+
+            transition:
+                background 0.2s ease;
+
+        }
+
+
+        .user-item:hover {
+
+            background:
+                var(--sage-background);
+
+        }
+
+
+        .user-item.active {
+
+            background:
+                var(--sage-light);
+
+            border-left:
+                4px solid var(--sage-dark);
+
+        }
+
+
+        .user-name {
+
+            font-weight:
+                600;
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                6px;
+
+        }
+
+
+        .user-meta {
+
+            color:
+                var(--gray);
+
+            font-size:
+                11px;
+
+        }
+
+
+        .empty-state {
+
+            padding:
+                50px 25px;
+
+            text-align:
+                center;
+
+            color:
+                var(--gray);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =================================
+           FEEDBACK PANEL
+        ================================= */
+
+        .feedback-panel {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                18px;
+
+            padding:
+                28px;
+
+        }
+
+
+        .no-selection {
+
+            height:
+                500px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            text-align:
+                center;
+
+            color:
+                var(--gray);
+
+        }
+
+
+        .feedback-content {
+
+            display:
+                none;
+
+        }
+
+
+        .user-header {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            padding-bottom:
+                22px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            margin-bottom:
+                25px;
+
+        }
+
+
+        .avatar {
+
+            width:
+                55px;
+
+            height:
+                55px;
+
+            border-radius:
+                50%;
+
+            background:
+                var(--sage-light);
+
+            color:
+                var(--sage-dark);
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            font-weight:
+                700;
+
+            font-size:
+                17px;
+
+        }
+
+
+        .user-header h2 {
+
+            font-size:
+                19px;
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .user-header p {
+
+            color:
+                var(--gray);
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* DETAILS */
+
+        .details {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap:
+                12px;
+
+            margin-bottom:
+                28px;
+
+        }
+
+
+        .detail-box {
+
+            background:
+                var(--sage-background);
+
+            border-radius:
+                10px;
+
+            padding:
+                14px;
+
+        }
+
+
+        .detail-label {
+
+            font-size:
+                10px;
+
+            color:
+                var(--gray);
+
+            margin-bottom:
+                6px;
+
+        }
+
+
+        .detail-value {
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+        }
+
+
+        /* FEEDBACK */
+
+        .feedback-label {
+
+            display:
+                block;
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+            margin-bottom:
+                9px;
+
+        }
+
+
+        .feedback-textarea {
+
+            width:
+                100%;
+
+            min-height:
+                210px;
+
+            resize:
+                vertical;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                12px;
+
+            padding:
+                15px;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-size:
+                14px;
+
+            line-height:
+                1.6;
+
+            outline:
+                none;
+
+        }
+
+
+        .feedback-textarea:focus {
+
+            border-color:
+                var(--sage);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(127, 155, 136, 0.12);
+
+        }
+
+
+        .feedback-actions {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            margin-top:
+                15px;
+
+        }
+
+
+        .email-note {
+
+            color:
+                var(--gray);
+
+            font-size:
+                11px;
+
+        }
+
+
+        .send-button {
+
+            border:
+                none;
+
+            background:
+                var(--sage-dark);
+
+            color:
+                white;
+
+            padding:
+                12px 22px;
+
+            border-radius:
+                9px;
+
+            font-family:
+                inherit;
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s;
+
+        }
+
+
+        .send-button:hover {
+
+            background:
+                #425649;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .success-message {
+
+            display:
+                none;
+
+            margin-top:
+                15px;
+
+            padding:
+                11px 14px;
+
+            background:
+                var(--sage-light);
+
+            color:
+                var(--sage-dark);
+
+            border-radius:
+                8px;
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 900px) {
+
+            .content-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr 1fr 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                padding:
+                    0 4%;
+
+            }
+
+
+            .admin-name {
+
+                display:
+                    none;
+
+            }
+
+
+            .dashboard {
+
+                width:
+                    92%;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .details {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .feedback-actions {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
+                gap:
+                    15px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         NAVIGATION
+    ================================== -->
+
+    <header class="navbar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                PhAI
+            </div>
+
+            <div class="brand-text">
+                Feedback Administration
+            </div>
+
+        </div>
+
+
+        <div class="admin-area">
+
+            <span
+                class="admin-name"
+                id="adminName"
+            >
+                Admin
+            </span>
+
+
+            <button
+                class="logout-button"
+                id="logoutButton"
+            >
+                Log Out
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================
+         DASHBOARD
+    ================================== -->
+
+    <main class="dashboard">
+
+
+        <div class="dashboard-header">
+
+            <h1>
+                Feedback Dashboard
+            </h1>
+
+            <p>
+                Review PhAI members and provide personalized
+                performance feedback.
+            </p>
+
+        </div>
+
+
+
+        <!-- STATISTICS -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Registered Members
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalUsers"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Feedback Sent
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="feedbackSent"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Awaiting Feedback
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="feedbackPending"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- CONTENT -->
+
+        <section class="content-grid">
+
+
+            <!-- USER LIST -->
+
+            <div class="users-panel">
+
+
+                <div class="panel-header">
+
+                    <h2>
+                        Members
+                    </h2>
+
+                    <p>
+                        Select a member to view their details.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="user-list"
+                    id="userList"
+                >
+
+                    <!-- Users are loaded with JavaScript -->
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- FEEDBACK -->
+
+            <div class="feedback-panel">
+
+
+                <div
+                    class="no-selection"
+                    id="noSelection"
+                >
+
+                    <div>
+
+                        <div style="font-size: 35px; margin-bottom: 15px;">
+                            👤
+                        </div>
+
+                        <strong>
+                            Select a member
+                        </strong>
+
+                        <p style="margin-top: 7px;">
+                            Choose a member from the list
+                            to write their feedback.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="feedback-content"
+                    id="feedbackContent"
+                >
+
+
+                    <!-- USER HEADER -->
+
+                    <div class="user-header">
+
+
+                        <div
+                            class="avatar"
+                            id="avatar"
+                        >
+                            U
+                        </div>
+
+
+                        <div>
+
+                            <h2 id="selectedName">
+                                Member Name
+                            </h2>
+
+                            <p id="selectedEmail">
+                                email@example.com
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- DETAILS -->
+
+                    <div class="details">
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                Position
+                            </div>
+
+                            <div
+                                class="detail-value"
+                                id="selectedPosition"
+                            >
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                Committee
+                            </div>
+
+                            <div
+                                class="detail-value"
+                                id="selectedCommittee"
+                            >
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+                                Status
+                            </div>
+
+                            <div
+                                class="detail-value"
+                                id="selectedStatus"
+                            >
+                                Pending
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- FEEDBACK -->
+
+                    <label
+                        class="feedback-label"
+                        for="feedbackText"
+                    >
+                        Performance Feedback
+                    </label>
+
+
+                    <textarea
+                        id="feedbackText"
+                        class="feedback-textarea"
+                        placeholder="Write your feedback for this member..."
+                    ></textarea>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="feedback-actions">
+
+
+                        <span
+                            class="email-note"
+                            id="emailNote"
+                        >
+                            Feedback will be sent to the member's email.
+                        </span>
+
+
+                        <button
+                            class="send-button"
+                            id="sendButton"
+                        >
+                            Send Feedback
+                        </button>
+
+
+                    </div>
+
+
+                    <div
+                        class="success-message"
+                        id="successMessage"
+                    >
+                        ✓ Feedback has been recorded successfully.
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

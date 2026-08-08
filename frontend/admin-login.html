@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PhAI | Admin Sign In</title>
+
+
+    <style>
+
+        :root {
+            --sage-dark: #526B5A;
+            --sage: #7F9B88;
+            --sage-light: #E2EBE4;
+            --background: #F4F8F5;
+
+            --dark: #26332A;
+            --gray: #6E776F;
+            --border: #DDE5DF;
+
+            --white: #FFFFFF;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #FFFFFF 0%,
+                    #F4F8F5 100%
+                );
+
+            color: var(--dark);
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+
+            height: 90px;
+
+            padding: 0 7%;
+
+            background: white;
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .logo-placeholder {
+
+            width: 65px;
+
+            height: 65px;
+
+            border-radius: 50%;
+
+            background:
+                var(--sage-dark);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-family: Georgia, serif;
+
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+
+        .back-link {
+
+            text-decoration: none;
+
+            color: var(--gray);
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+
+        .back-link:hover {
+
+            color:
+                var(--sage-dark);
+        }
+
+
+        /* PAGE */
+
+        .login-container {
+
+            flex: 1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 50px 20px;
+        }
+
+
+        /* LOGIN CARD */
+
+        .login-card {
+
+            width: 100%;
+
+            max-width: 440px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 24px;
+
+            padding: 45px;
+
+            box-shadow:
+                0 20px 55px
+                rgba(60, 85, 68, 0.10);
+        }
+
+
+        .login-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 15px;
+
+            background:
+                var(--sage-light);
+
+            color:
+                var(--sage-dark);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .login-card h1 {
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-size: 32px;
+
+            font-weight: 500;
+
+            margin-bottom: 10px;
+        }
+
+
+        .login-card > p {
+
+            color:
+                var(--gray);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* FORM */
+
+        .form-group {
+
+            margin-bottom: 21px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            height: 51px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding: 0 15px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            background: #FBFCFB;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .form-group input:focus {
+
+            border-color:
+                var(--sage);
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(127, 155, 136, 0.12);
+        }
+
+
+        /* BUTTON */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 53px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background:
+                var(--sage-dark);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        .login-button:hover {
+
+            background: #425649;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ERROR */
+
+        .error-message {
+
+            display: none;
+
+            background: #FBECEC;
+
+            color: #9B4545;
+
+            border:
+                1px solid #F0CACA;
+
+            padding: 12px 14px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .login-note {
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #9AA39D;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #9AA39D;
+
+            font-size: 11px;
+        }
+
+
+        @media (max-width: 600px) {
+
+            .login-card {
+
+                padding: 30px 24px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header class="navbar">
+
+        <div class="logo-placeholder">
+            PhAI
+        </div>
+
+
+        <a
+            href="index.html"
+            class="back-link"
+        >
+            ← Back to Portal
+        </a>
+
+    </header>
+
+
+
+    <main class="login-container">
+
+
+        <section class="login-card">
+
+
+            <div class="login-icon">
+                🔐
+            </div>
+
+
+            <h1>
+                Admin Sign In
+            </h1>
+
+
+            <p>
+                Sign in to access the PhAI feedback
+                administration portal.
+            </p>
+
+
+            <div
+                id="errorMessage"
+                class="error-message"
+            >
+                Incorrect username or password.
+            </div>
+
+
+
+            <form id="loginForm">
+
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter your username"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Sign In
+                </button>
+
+
+            </form>
+
+
+            <p class="login-note">
+                This area is restricted to authorized
+                PhAI administrators.
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        © 2026 PhAI · Feedback Portal
+
+    </footer>
+
+
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>
